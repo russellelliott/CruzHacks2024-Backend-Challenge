@@ -16,6 +16,7 @@ import {Credentials, User} from './auth';
 
 import secrets from '../../data/secrets.json';
 import users from '../../data/users.json';
+import {pool} from '../db';
 
 // User information; name, password, roles, name
 /*type UserInfo = {
@@ -42,11 +43,41 @@ type UserType = typeof UserInfo*/
 
 export class AuthService {
   public async login(credentials: Credentials): Promise<User|undefined>  {
-    const user = users.find((user) => { 
+
+    const select = 'SELECT info FROM human WHERE email = $1';
+    const query = {
+      text: select,
+      values: [credentials.email],
+    };
+    //console.log(email);
+    const {rows} = await pool.query(query);
+    //const user = rows[0].info;
+
+    if(rows){
+        const user = rows[0].info;
+        const correct = bcrypt.compareSync(credentials.password, rows[0].info.password); //make sure password is correct
+        if (user && correct) {
+            const accessToken = jwt.sign(
+            {email: credentials.email, name: user.name, roles: user.roles},
+            secrets.accessToken, {
+                expiresIn: '30m',
+                algorithm: 'HS256'
+            });
+            return({name: user.name, accessToken: accessToken});
+            
+        } else {
+            return(undefined);
+        }
+    }else{
+        return undefined;
+    }
+
+    /*const user = users.find((user) => { 
       return user.email === credentials.email && 
         bcrypt.compareSync(credentials.password, user.password);
-    });
-    if (user) {
+    });*/
+
+    /*if (user) {
       const accessToken = jwt.sign(
         {email: user.email, scopes: user.roles}, 
         secrets.accessToken, {
@@ -56,7 +87,7 @@ export class AuthService {
       return {name: user.name, accessToken: accessToken};
     } else {
       return undefined;
-    }
+    }*/
   }
 
   public async check(authHeader?: string, scopes?: string[]): Promise<User>  {
