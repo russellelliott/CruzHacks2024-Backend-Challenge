@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS human;
 -- table for people, if i can figure out authentication via database
 CREATE TABLE human(email VARCHAR(32), info jsonb);
 
-/*DROP TABLE IF EXISTS people;
+DROP TABLE IF EXISTS people;
 
 CREATE TABLE people (
   id UUID UNIQUE PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -17,5 +17,5 @@ CREATE TABLE people (
   application_type VARCHAR(10) NOT NULL,
   is_ucsc_student BOOLEAN,
   other_school VARCHAR(50),
-  current_company VARCHAR(50),
-);*/
+  current_company VARCHAR(50)
+);
