@@ -21,15 +21,26 @@ export class PersonService {
   }
 
   //get by id or email
-  public async get(isbn: string): Promise<Person|undefined> {
-    const select = 'SELECT * FROM people WHERE id = $1 OR email = $1';
-    const query = {
-      text: select,
-      values: [isbn],
-    };
-    const {rows} = await pool.query(query);
-    return rows.length == 1 ? rows[0] : undefined;
+  public async get(identifier: string): Promise<Person | undefined> {
+    let query;
+    const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/; //regex for uuid
+    if (uuidRegex.test(identifier)) {
+      const selectById = 'SELECT * FROM people WHERE id = $1';
+      query = {
+        text: selectById,
+        values: [identifier],
+      };
+    } else {
+      const selectByEmail = 'SELECT * FROM people WHERE email = $1';
+      query = {
+        text: selectByEmail,
+        values: [identifier],
+      };
+    }
+    const { rows } = await pool.query(query);
+    return rows.length === 1 ? rows[0] : undefined;
   }
+  
 
   /*public async create(book: Person): Promise<Person> {
     const insert = 'INSERT INTO channel(id, work) VALUES ($1, $2)';
@@ -42,13 +53,23 @@ export class PersonService {
   }*/
 
   //delete by id or email
-  public async delete(isbn: string): Promise<string|undefined> {
-    const insert = 'DELETE FROM people WHERE id = $1 OR email = $1';
-    const query = {
-      text: insert,
-      values: [isbn],
-    };
-    await pool.query(query);
-    return isbn;
+  public async delete(identifier: string): Promise<Person|undefined> {
+    let query;
+    const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/; //regex for uuid
+    if (uuidRegex.test(identifier)) {
+      const selectById = 'DELETE FROM people WHERE id = $1';
+      query = {
+        text: selectById,
+        values: [identifier],
+      };
+    } else {
+      const selectByEmail = 'DELETE FROM people WHERE email = $1';
+      query = {
+        text: selectByEmail,
+        values: [identifier],
+      };
+    }
+    const { rows } = await pool.query(query);
+    return rows.length === 1 ? rows[0] : undefined;
   }
 }

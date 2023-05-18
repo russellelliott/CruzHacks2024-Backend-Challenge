@@ -67,9 +67,9 @@ export class PersonController extends Controller {
     @SuccessResponse('201', 'Book created')
     public async deleteBook(
       @Path() isbn: string,
-    ): Promise<string|undefined> {
+    ): Promise<Person|undefined> {
       return new PersonService().get(isbn)
-        .then(async (found: Person|undefined): Promise<string|undefined> => {
+        .then(async (found: Person|undefined): Promise<Person|undefined> => {
           if (!found) {
             this.setStatus(404);
           } else {
