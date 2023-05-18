@@ -44,21 +44,32 @@ type UserType = typeof UserInfo*/
 export class AuthService {
   public async login(credentials: Credentials): Promise<User|undefined>  {
 
-    const select = 'SELECT info FROM human WHERE email = $1';
+    const select = `SELECT * FROM people \
+    WHERE email=$1 \
+    AND password = crypt($2, password)`;
+
+    const query = {
+      text: select,
+      values: [`${credentials.email}`, `${credentials.password}`],
+    };
+    const {rows} = await pool.query(query);
+    console.log(rows);
+
+    /*const select = 'SELECT info FROM human WHERE email = $1';
     const query = {
       text: select,
       values: [credentials.email],
     };
     //console.log(email);
-    const {rows} = await pool.query(query);
+    const {rows} = await pool.query(query);*/
     //const user = rows[0].info;
 
     if(rows){
-        const user = rows[0].info;
-        const correct = bcrypt.compareSync(credentials.password, rows[0].info.password); //make sure password is correct
-        if (user && correct) {
+        const user = rows[0];
+        //const correct = bcrypt.compareSync(credentials.password, rows[0].password); //make sure password is correct
+        if (user) {
             const accessToken = jwt.sign(
-            {email: credentials.email, name: user.name, roles: user.roles},
+            {email: credentials.email, name: user.name, roles: user.application_type},
             secrets.accessToken, {
                 expiresIn: '30m',
                 algorithm: 'HS256'
