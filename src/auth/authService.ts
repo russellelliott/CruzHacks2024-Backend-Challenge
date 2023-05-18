@@ -69,12 +69,12 @@ export class AuthService {
         //const correct = bcrypt.compareSync(credentials.password, rows[0].password); //make sure password is correct
         if (user) {
             const accessToken = jwt.sign(
-            {email: credentials.email, name: user.name, roles: user.application_type},
+            {email: credentials.email, name: user.name, scopes: [user.application_type]},
             secrets.accessToken, {
                 expiresIn: '30m',
                 algorithm: 'HS256'
             });
-            return({name: user.name, accessToken: accessToken, scopes: [user.application_type]});
+            return({name: user.name, accessToken: accessToken});
             
         } else {
             return(undefined);
