@@ -21,7 +21,7 @@ export class PersonController extends Controller {
     @Security("jwt", ["Judge"])
     @Response('401', 'Unauthorised')
     public async getAll(
-        @Query() id: string,
+        @Query() id?: string,
     ): Promise<Person[]> {
         return new PersonService().getAll(id);
     }
@@ -42,8 +42,8 @@ export class PersonController extends Controller {
         });
     }
   
-    /*@Post()
-    @Security("jwt", ["admin"])
+    @Post()
+    @Security("jwt", ["Judge"])
     @Response('401', 'Unauthorised')
     @Response('409', 'Book with ISBN exists')
     @SuccessResponse('201', 'Book created')
@@ -55,10 +55,10 @@ export class PersonController extends Controller {
           if (found) {
             this.setStatus(409);
           } else {
-            return await new PersonService().create(book);
+            return await new PersonService().addPerson(book);
           }
         });
-    }*/
+    }
 
     @Delete('{isbn}')
     @Security("jwt", ["Judge"])

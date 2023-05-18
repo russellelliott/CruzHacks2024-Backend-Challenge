@@ -42,15 +42,34 @@ export class PersonService {
   }
   
 
-  /*public async create(book: Person): Promise<Person> {
-    const insert = 'INSERT INTO channel(id, work) VALUES ($1, $2)';
-    const query = {
-      text: insert,
-      values: [book.id, book.owner],
-    };
-    await pool.query(query);
-    return book;
-  }*/
+  public async addPerson(person: Person): Promise<Person> {
+    const insertQuery = `
+      INSERT INTO people (id, name, gender, other_gender, email, password, age, application_type, is_ucsc_student, other_school, current_company)
+      VALUES (gen_random_uuid(), $1, $2, $3, $4, crypt($5, gen_salt('bf')), $6, $7, $8, $9, $10)
+    `;
+    const insertValues = [
+      person.name,
+      person.gender,
+      person.other_gender,
+      person.email,
+      person.password,
+      person.age,
+      person.application_type,
+      person.is_ucsc_student,
+      person.other_school,
+      person.current_company
+    ];
+  
+    try {
+      await pool.query(insertQuery, insertValues);
+      console.log('Person added successfully!');
+      return person;
+    } catch (error) {
+      // Handle the error appropriately
+      console.error('Error occurred while adding the person:', error);
+      throw error;
+    }
+  }
 
   //delete by id or email
   public async delete(identifier: string): Promise<Person|undefined> {
