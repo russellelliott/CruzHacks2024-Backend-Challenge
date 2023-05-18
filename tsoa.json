@@ -12,8 +12,8 @@
         "type": "http",
         "scheme": "bearer",
         "scopes": {
-          "member": "member",
-          "admin": "admin"
+          "Judge": "Judge",
+          "Hacker": "Hacker"
         }
       }
     }

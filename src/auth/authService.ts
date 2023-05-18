@@ -74,7 +74,7 @@ export class AuthService {
                 expiresIn: '30m',
                 algorithm: 'HS256'
             });
-            return({name: user.name, accessToken: accessToken});
+            return({name: user.name, accessToken: accessToken, scopes: [user.application_type]});
             
         } else {
             return(undefined);
