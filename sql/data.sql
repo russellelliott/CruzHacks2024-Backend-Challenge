@@ -25,8 +25,8 @@ CREATE TABLE people (
 );
 */
 
-INSERT INTO people (name, gender, other_gender, email, password, age, application_type, is_ucsc_student, other_school, current_company)
+INSERT INTO people (id, name, gender, other_gender, email, password, age, application_type, is_ucsc_student, other_school, current_company)
 VALUES
-  ('John Doe', 'Male', NULL, 'john.doe@example.com', crypt('password1', gen_salt('bf')), '25', 'Hacker', true, NULL, NULL),
-  ('Jane Smith', 'Female', NULL, 'jane.smith@example.com', crypt('password2', gen_salt('bf')), '30', 'Judge', false, NULL, 'Company A'),
-  ('Mike Johnson', 'Male', NULL, 'mike.johnson@example.com', crypt('password3', gen_salt('bf')), '40', 'Hacker', true, 'Other School', NULL);
+  ('86cbd2ec-ccbb-4eb3-aa99-2e8415f9d302', 'John Doe', 'Male', NULL, 'john.doe@example.com', crypt('password1', gen_salt('bf')), '25', 'Hacker', true, NULL, NULL),
+  ('2330c6d8-2bdb-4a5e-b4f9-091207f7f383', 'Jane Smith', 'Female', NULL, 'jane.smith@example.com', crypt('password2', gen_salt('bf')), '30', 'Judge', false, NULL, 'Company A'),
+  ('6817e4c6-2ca6-4669-8056-50953f781be4', 'Mike Johnson', 'Male', NULL, 'mike.johnson@example.com', crypt('password3', gen_salt('bf')), '40', 'Hacker', true, 'Other School', NULL);
