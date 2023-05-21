@@ -1,4 +1,4 @@
-import {Person} from './person';
+import {Person, PartialPerson} from './person';
 
 import {pool} from '../db';
 
@@ -67,6 +67,68 @@ export class PersonService {
     } catch (error) {
       // Handle the error appropriately
       console.error('Error occurred while adding the person:', error);
+      throw error;
+    }
+  }
+
+  /*public async updatePerson2(id: string, updatedProperties: Partial<Person>): Promise<Person> {
+    const { email, application_type, ...otherProperties } = updatedProperties;
+    const updateValues: any[] = [];
+    let updateQuery = `UPDATE people SET`;
+  
+    let paramCount = 1;
+    Object.keys(otherProperties).forEach((key, index) => {
+      updateQuery += ` ${key} = $${paramCount}`;
+      updateValues.push(otherProperties[key]);
+      paramCount++;
+  
+      if (index < Object.keys(otherProperties).length - 1) {
+        updateQuery += `,`;
+      }
+    });
+  
+    updateQuery += ` WHERE id = $${paramCount} RETURNING *`;
+    updateValues.push(id);
+  
+    try {
+      const result = await pool.query(updateQuery, updateValues);
+      const updatedPerson = result.rows[0];
+      console.log('Person updated successfully!');
+      return updatedPerson;
+    } catch (error) {
+      console.error('Error occurred while updating the person:', error);
+      throw error;
+    }
+  }*/
+
+  
+  
+  public async updatePerson(id: string, updatedProperties: PartialPerson): Promise<Person> {
+    const { email, application_type, ...otherProperties } = updatedProperties;
+    const updateValues: any[] = [];
+    let updateQuery = `UPDATE people SET`;
+  
+    let paramCount = 1;
+    Object.keys(otherProperties).forEach((key, index) => {
+      updateQuery += ` ${key} = $${paramCount}`;
+      updateValues.push(otherProperties[key]);
+      paramCount++;
+  
+      if (index < Object.keys(otherProperties).length - 1) {
+        updateQuery += `,`;
+      }
+    });
+  
+    updateQuery += ` WHERE id = $${paramCount} RETURNING *`;
+    updateValues.push(id);
+  
+    try {
+      const result = await pool.query(updateQuery, updateValues);
+      const updatedPerson = result.rows[0];
+      console.log('Person updated successfully!');
+      return updatedPerson;
+    } catch (error) {
+      console.error('Error occurred while updating the person:', error);
       throw error;
     }
   }

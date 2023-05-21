@@ -5,6 +5,7 @@ import {
   Get,
   Path,
   Post,
+  Patch,
   Query,
   Response,
   Route,
@@ -56,6 +57,27 @@ export class PersonController extends Controller {
             this.setStatus(409);
           } else {
             return await new PersonService().addPerson(book);
+          }
+        });
+    }
+
+    @Patch()
+    @Security("jwt", ["Judge"])
+    @Response('401', 'Unauthorized')
+    @Response('404', 'Book not found')
+    @SuccessResponse('200', 'Book updated')
+    public async updateBook(
+      @Body() book: Partial<Person>,
+      @Query('email') email: string,
+    ): Promise<Person|undefined> {
+      return new PersonService().get(email)
+        .then(async (found: Person|undefined): Promise<Person|undefined> => {
+          if (!found) {
+            this.setStatus(404);
+          } else {
+            // Exclude email and application type from update
+            const { ...updatedProperties } = book;
+            return await new PersonService().updatePerson(found.id, updatedProperties);
           }
         });
     }

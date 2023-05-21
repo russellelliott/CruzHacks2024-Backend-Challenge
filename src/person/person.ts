@@ -13,3 +13,7 @@ export interface Person {
     other_school: string,
     current_company: string
 }
+
+export interface PartialPerson extends Partial<Person> {
+  [key: string]: any;
+}
