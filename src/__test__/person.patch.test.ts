@@ -55,4 +55,9 @@ test('PATCH Update', async () => {
       expect(res.body.age).toEqual(updatedPerson.age.toString());
       expect(res.body.current_company).toEqual(updatedPerson.current_company);
     });
+
+    //delete by id
+    await request.delete('/api/v0/person/' + '6817e4c6-2ca6-4669-8056-50953f781be4')
+    .set('Authorization', 'Bearer ' + accessToken)
+    .expect(204);
 });

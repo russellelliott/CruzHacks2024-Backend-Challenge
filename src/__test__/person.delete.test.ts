@@ -104,7 +104,7 @@ const book = {
   current_company: "ABC Company",
 };
 
-/*test('Create and Delete Person', async () => {
+test('Create and Delete Person', async () => {
   // Create the person
   const createResponse = await request.post('/api/v0/person/')
     .set('Authorization', 'Bearer ' + accessToken)
@@ -115,16 +115,17 @@ const book = {
   expect(createResponse.body).toBeDefined();
   expect(createResponse.body.id).toBeDefined();
   //expect(createResponse.body.id).toEqual(book.id);
-  console.log("the response:\n", createResponse.body.id);
-  const createdPersonId = createResponse.body.id;
+  //console.log("the response:\n", createResponse.body.id);
+  //const createdPersonId = createResponse.body.id;
 
   // Delete the person
-  const deleteResponse = await request.delete(`/api/v0/person/${book.email}`)
+  const deleteResponse = await request.delete('/api/v0/person/' + book.email)
     .set('Authorization', 'Bearer ' + accessToken)
     .expect(204);
 
   expect(deleteResponse).toBeDefined();
-});*/
+});
+
 
 test('DELETE 404', async () => {
   await request.delete('/api/v0/person/' + 'faker')
