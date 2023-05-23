@@ -56,7 +56,7 @@ test('GET All', async () => {
 });
 
 test('GET One', async () => {
-  await request.get('/api/v0/person/user1')
+  await request.get('/api/v0/person/86cbd2ec-ccbb-4eb3-aa99-2e8415f9d302')
     .set('Authorization', 'Bearer ' + accessToken)
     .expect(200)
     .expect('Content-Type', /json/)
@@ -67,7 +67,7 @@ test('GET One', async () => {
 });
 
 test('GET One (query parameter)', async () => {
-  await request.get('/api/v0/person?id=user1')
+  await request.get('/api/v0/person?id=86cbd2ec-ccbb-4eb3-aa99-2e8415f9d302')
     .set('Authorization', 'Bearer ' + accessToken)
     .expect(200)
     .expect('Content-Type', /json/)

@@ -46,12 +46,12 @@ for (i = 0; i < 5; i++) {
   ID += number;
 }
 
-const book = {
+/*const book = {
   id: ID,
   role: 'admin',
-};
+};*/
 
-test('POST New', async () => {
+/*test('POST New', async () => {
   await request.post('/api/v0/person/')
     .set('Authorization', 'Bearer ' + accessToken)
     .send(book)
@@ -61,7 +61,7 @@ test('POST New', async () => {
       expect(res.body).toBeDefined();
       expect(res.body.id).toBeDefined();
       expect(res.body.id).toEqual(book.id);
-      expect(res.body.role).toEqual(book.role);
+      //expect(res.body.role).toEqual(book.role);
     });
 });
 
@@ -74,7 +74,7 @@ test('GET After POST', async () => {
       expect(res.body).toBeDefined();
       expect(res.body.id).toBeDefined();
       expect(res.body.id).toEqual(book.id);
-      expect(res.body.lock).toEqual(book.role);
+      //expect(res.body.lock).toEqual(book.role);
       // i called it "lock" when getting it;
       // i think "role" is a keyword
     });
@@ -82,6 +82,43 @@ test('GET After POST', async () => {
 
 test('DELETE After POST', async () => {
   await request.delete('/api/v0/person/' + book.id)
+    .set('Authorization', 'Bearer ' + accessToken)
+    .expect(201);
+});*/
+
+const book = {
+  id: "", // The ID will be generated automatically on the server-side
+  name: "Harvey Hacker",
+  gender: "Male",
+  other_gender: "",
+  email: "harvey@hacker.com",
+  password: "ucanthackme",
+  age: 25,
+  application_type: "Hacker",
+  is_ucsc_student: true,
+  other_school: "",
+  current_company: "ABC Company",
+};
+
+let createdPersonId: string; // Declare the variable outside the test block
+
+test('POST New', async () => {
+  await request.post('/api/v0/person/')
+    .set('Authorization', 'Bearer ' + accessToken)
+    .send(book)
+    .expect(201)
+    .then((res) => {
+      expect(res).toBeDefined();
+      expect(res.body).toBeDefined();
+      expect(res.body.id).toBeDefined();
+      expect(res.body.id).toEqual(book.id);
+
+      createdPersonId = res.body.id; // Assign the ID value to the variable
+    });
+});
+
+test('DELETE Person', async () => {
+  await request.delete(`/api/v0/person/${createdPersonId}`)
     .set('Authorization', 'Bearer ' + accessToken)
     .expect(201);
 });

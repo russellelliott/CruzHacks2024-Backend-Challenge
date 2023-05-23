@@ -47,10 +47,26 @@ for (i = 0; i < 5; i++) {
 }
 
 
-const book = {
+/*const book = {
   id: ID,
   role: 'admin',
+};*/
+
+const book = {
+  id: "", // The ID will be generated automatically on the server-side
+  name: "John Doe",
+  gender: "Male",
+  other_gender: "",
+  email: "johndoe@example.com",
+  password: "password123",
+  age: 25,
+  application_type: "TypeA",
+  is_ucsc_student: true,
+  other_school: "",
+  current_company: "ABC Company",
 };
+
+let createdPersonId: string;
 
 test('POST New', async () => {
   await request.post('/api/v0/person/')
@@ -62,7 +78,37 @@ test('POST New', async () => {
       expect(res.body).toBeDefined();
       expect(res.body.id).toBeDefined();
       expect(res.body.id).toEqual(book.id);
-      expect(res.body.role).toEqual(book.role);
+
+      // Store the ID in the variable
+      createdPersonId = res.body.id;
+    });
+});
+
+test('GET Created Person', async () => {
+  // Use the createdPersonId variable in the request
+  const response = await request.get(`/api/v0/person/${createdPersonId}`)
+    .set('Authorization', 'Bearer ' + accessToken)
+    .expect(200);
+
+  // Perform assertions on the response
+  expect(response).toBeDefined();
+  expect(response.body).toBeDefined();
+  expect(response.body.id).toEqual(createdPersonId);
+  // Other assertions...
+});
+
+
+/*test('POST New', async () => {
+  await request.post('/api/v0/person/')
+    .set('Authorization', 'Bearer ' + accessToken)
+    .send(book)
+    .expect(201)
+    .then((res) => {
+      expect(res).toBeDefined();
+      expect(res.body).toBeDefined();
+      expect(res.body.id).toBeDefined();
+      expect(res.body.id).toEqual(book.id);
+      //expect(res.body.role).toEqual(book.role);
     });
 });
 
@@ -75,11 +121,11 @@ test('GET After POST', async () => {
       expect(res.body).toBeDefined();
       expect(res.body.id).toBeDefined();
       expect(res.body.id).toEqual(book.id);
-      expect(res.body.lock).toEqual(book.role);
+      //expect(res.body.lock).toEqual(book.role);
       // i called it "lock" when getting it;
       // i think "role" is a keyword
     });
-});
+});*/
 
 /*test('POST Invalid ISBN', async () => {
   book.isbn = 'some-old-guff';
@@ -90,7 +136,7 @@ test('GET After POST', async () => {
 });*/
 
 test('POST Exisiting ISBN', async () => {
-  book.id = 'user2';
+  book.id = '86cbd2ec-ccbb-4eb3-aa99-2e8415f9d302';
   await request.post('/api/v0/person/')
     .set('Authorization', 'Bearer ' + accessToken)
     .send(book)
