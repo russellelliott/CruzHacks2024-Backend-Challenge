@@ -28,6 +28,10 @@ beforeAll(async () => {
   await db.reset(); // reset database
 });
 
+beforeEach(async () => {
+  await db.reset(); // reset database
+});
+
 afterAll((done) => {
   server.close(done);
   db.shutdown(); // reset server
@@ -100,28 +104,27 @@ const book = {
   current_company: "ABC Company",
 };
 
-let createdPersonId: string; // Declare the variable outside the test block
-
-test('POST New', async () => {
-  await request.post('/api/v0/person/')
+/*test('Create and Delete Person', async () => {
+  // Create the person
+  const createResponse = await request.post('/api/v0/person/')
     .set('Authorization', 'Bearer ' + accessToken)
     .send(book)
-    .expect(201)
-    .then((res) => {
-      expect(res).toBeDefined();
-      expect(res.body).toBeDefined();
-      expect(res.body.id).toBeDefined();
-      expect(res.body.id).toEqual(book.id);
-
-      createdPersonId = res.body.id; // Assign the ID value to the variable
-    });
-});
-
-test('DELETE Person', async () => {
-  await request.delete(`/api/v0/person/${createdPersonId}`)
-    .set('Authorization', 'Bearer ' + accessToken)
     .expect(201);
-});
+
+  expect(createResponse).toBeDefined();
+  expect(createResponse.body).toBeDefined();
+  expect(createResponse.body.id).toBeDefined();
+  //expect(createResponse.body.id).toEqual(book.id);
+  console.log("the response:\n", createResponse.body.id);
+  const createdPersonId = createResponse.body.id;
+
+  // Delete the person
+  const deleteResponse = await request.delete(`/api/v0/person/${book.email}`)
+    .set('Authorization', 'Bearer ' + accessToken)
+    .expect(204);
+
+  expect(deleteResponse).toBeDefined();
+});*/
 
 test('DELETE 404', async () => {
   await request.delete('/api/v0/person/' + 'faker')

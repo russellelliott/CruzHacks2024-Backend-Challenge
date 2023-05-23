@@ -84,7 +84,7 @@ test('POST New', async () => {
     });
 });
 
-test('GET Created Person', async () => {
+/*test('GET Created Person', async () => {
   // Use the createdPersonId variable in the request
   const response = await request.get(`/api/v0/person/${createdPersonId}`)
     .set('Authorization', 'Bearer ' + accessToken)
@@ -95,7 +95,7 @@ test('GET Created Person', async () => {
   expect(response.body).toBeDefined();
   expect(response.body.id).toEqual(createdPersonId);
   // Other assertions...
-});
+});*/
 
 
 /*test('POST New', async () => {

@@ -86,16 +86,17 @@ export class PersonController extends Controller {
     @Security("jwt", ["Judge"])
     @Response('401', 'Unauthorised')
     @Response('404', 'Book does not exist')
-    @SuccessResponse('201', 'Book created')
+    @SuccessResponse('204', 'Book deleted')
     public async deleteBook(
       @Path() isbn: string,
-    ): Promise<Person|undefined> {
+    ): Promise<void> {
       return new PersonService().get(isbn)
-        .then(async (found: Person|undefined): Promise<Person|undefined> => {
+        .then(async (found: Person|undefined): Promise<void> => {
           if (!found) {
             this.setStatus(404);
           } else {
-            return await new PersonService().delete(isbn);
+            await new PersonService().delete(isbn);
+            this.setStatus(204);
           }
         });
     }

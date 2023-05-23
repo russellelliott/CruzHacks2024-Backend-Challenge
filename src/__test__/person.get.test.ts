@@ -25,7 +25,7 @@ beforeAll(async () => {
   server = http.createServer(app);
   server.listen();
   request = supertest(server);
-  accessToken = await login.asMolly(request);
+  accessToken = await login.asAnna(request);
   await db.reset(); // reset database
 });
 
