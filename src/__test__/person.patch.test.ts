@@ -35,7 +35,7 @@ afterAll((done) => {
 });
 
 test('PATCH Update', async () => {
-    let email = "molly@books.com"
+    let email = "nobby@books.com"
   const updatedPerson = {
     name: "Jane Smith",
     age: 30,
