@@ -143,6 +143,14 @@ test('POST Exisiting ISBN', async () => {
     .expect(409);
 });
 
+test('POST Exisiting Email', async () => {
+  book.id = 'anna@books.com';
+  await request.post('/api/v0/person/')
+    .set('Authorization', 'Bearer ' + accessToken)
+    .send(book)
+    .expect(409);
+});
+
 /*test('POST Bad Request', async () => {
   book.isbn = 'AAAAAAAA';
   await request.post('/api/v0/book/')
