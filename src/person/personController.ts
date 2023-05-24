@@ -50,13 +50,22 @@ export class PersonController extends Controller {
     @SuccessResponse('201', 'Book created')
     public async createBook(
       @Body() book: Person,
-    ): Promise<Person|undefined> {
+    ): Promise<Person | undefined> {
+      const personService = new PersonService();
+    
       return new PersonService().get(book.id)
-        .then(async (found: Person|undefined): Promise<Person|undefined> => {
-          if (found) {
+        .then(async (foundById: Person | undefined): Promise<Person | undefined> => {
+          if (foundById) {
             this.setStatus(409);
           } else {
-            return await new PersonService().addPerson(book);
+            return personService.get(book.email)
+              .then(async (foundByEmail: Person | undefined): Promise<Person | undefined> => {
+                if (foundByEmail) {
+                  this.setStatus(409);
+                } else {
+                  return await personService.addPerson(book);
+                }
+              });
           }
         });
     }
