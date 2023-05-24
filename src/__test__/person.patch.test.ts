@@ -61,3 +61,17 @@ test('PATCH Update', async () => {
     .set('Authorization', 'Bearer ' + accessToken)
     .expect(204);
 });
+
+test('PATCH 404', async () => {
+    let email = "notanemail@books.com"
+  const updatedPerson = {
+    name: "Jane Smith",
+    age: 30,
+    current_company: "XYZ Company",
+  };
+
+  await request.patch(`/api/v0/person/?email=${email}`)
+    .set('Authorization', 'Bearer ' + accessToken)
+    .send(updatedPerson)
+    .expect(404);
+});
