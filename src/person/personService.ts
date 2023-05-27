@@ -60,15 +60,9 @@ export class PersonService {
       person.current_company
     ];
   
-    try {
-      await pool.query(insertQuery, insertValues);
-      console.log('Person added successfully!');
-      return person;
-    } catch (error) {
-      // Handle the error appropriately
-      console.error('Error occurred while adding the person:', error);
-      throw error;
-    }
+    await pool.query(insertQuery, insertValues);
+    console.log('Person added successfully!');
+    return person;
   }
 
   /*public async updatePerson2(id: string, updatedProperties: Partial<Person>): Promise<Person> {
@@ -122,15 +116,12 @@ export class PersonService {
     updateQuery += ` WHERE id = $${paramCount} RETURNING *`;
     updateValues.push(id);
   
-    try {
-      const result = await pool.query(updateQuery, updateValues);
-      const updatedPerson = result.rows[0];
-      console.log('Person updated successfully!');
-      return updatedPerson;
-    } catch (error) {
-      console.error('Error occurred while updating the person:', error);
-      throw error;
-    }
+    
+    const result = await pool.query(updateQuery, updateValues);
+    const updatedPerson = result.rows[0];
+    console.log('Person updated successfully!');
+    return updatedPerson;
+    
   }
 
   //delete by id or email
