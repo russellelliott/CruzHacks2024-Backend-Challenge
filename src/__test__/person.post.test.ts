@@ -60,7 +60,7 @@ const book = {
   email: "johndoe@example.com",
   password: "password123",
   age: 25,
-  application_type: "TypeA",
+  application_type: "Judge",
   is_ucsc_student: true,
   other_school: "",
   current_company: "ABC Company",
