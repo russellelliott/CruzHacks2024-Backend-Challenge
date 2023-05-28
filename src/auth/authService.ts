@@ -15,7 +15,6 @@ import * as bcrypt from "bcrypt";
 import {Credentials, User} from './auth';
 
 import secrets from '../../data/secrets.json';
-import users from '../../data/users.json';
 import {pool} from '../db';
 
 // User information; name, password, roles, name
